@@ -3,6 +3,8 @@ import { ConfigModule } from '@nestjs/config';
 
 import databaseConfig from './config/database.config';
 
+import { ProjectsModule } from './projects/projects.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -10,6 +12,7 @@ import databaseConfig from './config/database.config';
       envFilePath: '.dev.env',
       load: [databaseConfig],
     }),
+    ProjectsModule,
   ],
 })
 export class AppModule {}

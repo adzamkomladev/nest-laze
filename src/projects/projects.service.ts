@@ -11,4 +11,8 @@ export class ProjectsService {
   async findAll(): Promise<any[]> {
     return this.projects;
   }
+
+  async findOne(): Promise<any> {
+    return {};
+  }
 }

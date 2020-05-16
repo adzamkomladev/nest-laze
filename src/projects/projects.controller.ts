@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 
 import { ProjectsService } from './projects.service';
 
@@ -9,5 +9,10 @@ export class ProjectsController {
   @Get()
   findAll(): Promise<any[]> {
     return this.projectsService.findAll();
+  }
+
+  @Get('/:id')
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<any> {
+    return this.projectsService.findOne();
   }
 }

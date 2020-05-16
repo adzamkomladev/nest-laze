@@ -1,12 +1,16 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { ConfigService } from '@nestjs/config';
 
-import applicationConfig from './config/appliation.config';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix(applicationConfig().version);
-  await app.listen(applicationConfig().port);
+
+  const configService = app.get(ConfigService);
+
+  app.setGlobalPrefix(configService.get<string>('app.version'));
+
+  await app.listen(configService.get<number>('app.port'));
 }
 
 bootstrap();

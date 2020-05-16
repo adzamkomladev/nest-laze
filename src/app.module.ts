@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 import databaseConfig from './config/database.config';
+import appConfig from './config/app.config';
 
 import { ProjectsModule } from './projects/projects.module';
 
@@ -10,7 +12,12 @@ import { ProjectsModule } from './projects/projects.module';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.dev.env',
-      load: [databaseConfig],
+      load: [appConfig, databaseConfig],
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (config: ConfigService) => config.get('database'),
+      inject: [ConfigService],
     }),
     ProjectsModule,
   ],

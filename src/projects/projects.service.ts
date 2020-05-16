@@ -1,18 +1,26 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+
+import { ProjectRepository } from './repositories/project.repository';
+
+import { Project } from './entities/project.entity';
 
 @Injectable()
 export class ProjectsService {
-  private readonly projects: any[];
+  constructor(
+    @InjectRepository(ProjectRepository)
+    private readonly projectsRepository: ProjectRepository,
+  ) {}
 
-  constructor() {
-    this.projects = [];
+  findAll(): Promise<Project[]> {
+    return this.projectsRepository.find();
   }
 
-  async findAll(): Promise<any[]> {
-    return this.projects;
-  }
-
-  async findOne(): Promise<any> {
-    return {};
+  async findOne(id: number): Promise<Project> {
+    try {
+      return await this.projectsRepository.findOneOrFail(id);
+    } catch (error) {
+      throw new NotFoundException(`Project with id: '${id}' not found!`);
+    }
   }
 }

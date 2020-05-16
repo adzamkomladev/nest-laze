@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ProjectRepository } from './repositories/project.repository';
 
 import { Project } from './entities/project.entity';
+import { CreateProjectDto } from './dtos/create-project.dto';
 
 @Injectable()
 export class ProjectsService {
@@ -22,5 +23,9 @@ export class ProjectsService {
     } catch (error) {
       throw new NotFoundException(`Project with id: '${id}' not found!`);
     }
+  }
+
+  create(createProjectDto: CreateProjectDto): Promise<Project> {
+    return this.projectsRepository.createProject(createProjectDto);
   }
 }

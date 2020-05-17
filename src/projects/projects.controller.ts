@@ -1,15 +1,13 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
-  HttpStatus,
   Logger,
   Param,
   ParseIntPipe,
   Patch,
   Post,
-  Put,
-  Res,
 } from '@nestjs/common';
 
 import { ProjectsService } from './projects.service';
@@ -51,5 +49,10 @@ export class ProjectsController {
     this.logger.log({ id, updateProjectDto });
 
     return this.projectsService.update(id, updateProjectDto);
+  }
+
+  @Delete(':id')
+  delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    return this.projectsService.delete(id);
   }
 }

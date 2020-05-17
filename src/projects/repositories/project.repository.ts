@@ -19,7 +19,9 @@ export class ProjectRepository extends Repository<Project> {
       );
     }
 
-    return query.getMany();
+    return query
+      .leftJoinAndSelect('project.projectFiles', 'projectFile')
+      .getMany();
   }
 
   createProject(createProjectDto: CreateProjectDto): Promise<Project> {

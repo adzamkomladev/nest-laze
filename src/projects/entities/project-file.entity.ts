@@ -1,31 +1,31 @@
 import {
-  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-import { ProjectFile } from './project-file.entity';
+import { Project } from './project.entity';
 
 @Entity()
-export class Project extends BaseEntity {
+export class ProjectFile {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  title: string;
+  url: string;
 
   @Column()
-  details: string;
+  projectId: number;
 
-  @OneToMany(
-    type => ProjectFile,
-    projectFile => projectFile.project,
+  @ManyToOne(
+    type => Project,
+    project => project.projectFiles,
+    { eager: false },
   )
-  projectFiles: ProjectFile[];
+  project: Project;
 
   @CreateDateColumn()
   createdAt: Date;

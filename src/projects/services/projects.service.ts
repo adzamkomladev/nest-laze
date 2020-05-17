@@ -1,12 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { ProjectRepository } from './repositories/project.repository';
+import { ProjectRepository } from '../repositories/project.repository';
 
-import { Project } from './entities/project.entity';
-import { CreateProjectDto } from './dtos/create-project.dto';
-import { UpdateProjectDto } from './dtos/update-project.dto';
-import { ProjectsFilterDto } from './dtos/projects-filter.dto';
+import { Project } from '../entities/project.entity';
+import { CreateProjectDto } from '../dtos/create-project.dto';
+import { UpdateProjectDto } from '../dtos/update-project.dto';
+import { ProjectsFilterDto } from '../dtos/projects-filter.dto';
 
 @Injectable()
 export class ProjectsService {
@@ -21,7 +21,9 @@ export class ProjectsService {
 
   async findOne(id: number): Promise<Project> {
     try {
-      return await this.projectsRepository.findOneOrFail(id);
+      return await this.projectsRepository.findOneOrFail(id, {
+        relations: ['projectFiles'],
+      });
     } catch (error) {
       throw new NotFoundException(`Project with id: '${id}' not found!`);
     }

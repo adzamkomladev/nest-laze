@@ -3,12 +3,9 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-
-import { ProjectFile } from './project-file.entity';
 
 @Entity()
 export class Project extends BaseEntity {
@@ -21,11 +18,8 @@ export class Project extends BaseEntity {
   @Column()
   details: string;
 
-  @OneToMany(
-    type => ProjectFile,
-    projectFile => projectFile.project,
-  )
-  projectFiles: ProjectFile[];
+  @Column({ nullable: true })
+  fileUrl?: string;
 
   @CreateDateColumn()
   createdAt: Date;

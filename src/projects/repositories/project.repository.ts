@@ -19,18 +19,20 @@ export class ProjectRepository extends Repository<Project> {
       );
     }
 
-    return query
-      .leftJoinAndSelect('project.projectFiles', 'projectFile')
-      .getMany();
+    return query.getMany();
   }
 
-  createProject(createProjectDto: CreateProjectDto): Promise<Project> {
+  createProject(
+    createProjectDto: CreateProjectDto,
+    fileUrl?: string,
+  ): Promise<Project> {
     const { title, details } = createProjectDto;
 
     const project = this.create();
 
     project.title = title;
     project.details = details;
+    project.fileUrl = fileUrl;
 
     return project.save();
   }

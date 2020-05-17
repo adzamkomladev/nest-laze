@@ -21,25 +21,30 @@ export class ProjectsService {
 
   async findOne(id: number): Promise<Project> {
     try {
-      return await this.projectsRepository.findOneOrFail(id, {
-        relations: ['projectFiles'],
-      });
+      return await this.projectsRepository.findOneOrFail(id);
     } catch (error) {
       throw new NotFoundException(`Project with id: '${id}' not found!`);
     }
   }
 
-  create(createProjectDto: CreateProjectDto): Promise<Project> {
-    return this.projectsRepository.createProject(createProjectDto);
+  create(createProjectDto: CreateProjectDto, file?: any): Promise<Project> {
+    const fileUrl = file?.path;
+
+    return this.projectsRepository.createProject(createProjectDto, fileUrl);
   }
 
-  async update(id: number, updateProjectDto: UpdateProjectDto): Promise<void> {
+  async update(
+    id: number,
+    updateProjectDto: UpdateProjectDto,
+    file?: any,
+  ): Promise<void> {
     const project = await this.findOne(id);
 
     const { title, details } = updateProjectDto;
 
     project.title = title ?? project.title;
     project.details = details ?? project.details;
+    project.fileUrl = file?.path ?? project.fileUrl;
 
     await project.save();
   }

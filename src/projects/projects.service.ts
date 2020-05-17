@@ -6,6 +6,7 @@ import { ProjectRepository } from './repositories/project.repository';
 import { Project } from './entities/project.entity';
 import { CreateProjectDto } from './dtos/create-project.dto';
 import { UpdateProjectDto } from './dtos/update-project.dto';
+import { ProjectsFilterDto } from './dtos/projects-filter.dto';
 
 @Injectable()
 export class ProjectsService {
@@ -14,8 +15,8 @@ export class ProjectsService {
     private readonly projectsRepository: ProjectRepository,
   ) {}
 
-  findAll(): Promise<Project[]> {
-    return this.projectsRepository.find();
+  findAll(projectsFilterDto: ProjectsFilterDto): Promise<Project[]> {
+    return this.projectsRepository.filterProjects(projectsFilterDto);
   }
 
   async findOne(id: number): Promise<Project> {

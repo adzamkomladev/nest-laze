@@ -8,6 +8,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 
 import { ProjectsService } from './projects.service';
@@ -16,6 +17,7 @@ import { Project } from './entities/project.entity';
 
 import { CreateProjectDto } from './dtos/create-project.dto';
 import { UpdateProjectDto } from './dtos/update-project.dto';
+import { ProjectsFilterDto } from './dtos/projects-filter.dto';
 
 @Controller('projects')
 export class ProjectsController {
@@ -32,8 +34,8 @@ export class ProjectsController {
   }
 
   @Get()
-  findAll(): Promise<Project[]> {
-    return this.projectsService.findAll();
+  findAll(@Query() projectsFilterDto: ProjectsFilterDto): Promise<Project[]> {
+    return this.projectsService.findAll(projectsFilterDto);
   }
 
   @Get(':id')

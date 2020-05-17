@@ -5,6 +5,7 @@ import { ProjectRepository } from './repositories/project.repository';
 
 import { Project } from './entities/project.entity';
 import { CreateProjectDto } from './dtos/create-project.dto';
+import { UpdateProjectDto } from './dtos/update-project.dto';
 
 @Injectable()
 export class ProjectsService {
@@ -27,5 +28,16 @@ export class ProjectsService {
 
   create(createProjectDto: CreateProjectDto): Promise<Project> {
     return this.projectsRepository.createProject(createProjectDto);
+  }
+
+  async update(id: number, updateProjectDto: UpdateProjectDto): Promise<void> {
+    const project = await this.findOne(id);
+
+    const { title, details } = updateProjectDto;
+
+    project.title = title ?? project.title;
+    project.details = details ?? project.details;
+
+    await project.save();
   }
 }

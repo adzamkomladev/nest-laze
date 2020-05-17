@@ -2,10 +2,14 @@ import {
   Body,
   Controller,
   Get,
+  HttpStatus,
   Logger,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
+  Put,
+  Res,
 } from '@nestjs/common';
 
 import { ProjectsService } from './projects.service';
@@ -13,14 +17,19 @@ import { ProjectsService } from './projects.service';
 import { Project } from './entities/project.entity';
 
 import { CreateProjectDto } from './dtos/create-project.dto';
+import { UpdateProjectDto } from './dtos/update-project.dto';
 
 @Controller('projects')
 export class ProjectsController {
-  constructor(private readonly projectsService: ProjectsService) {}
+  private readonly logger: Logger;
+
+  constructor(private readonly projectsService: ProjectsService) {
+    this.logger = new Logger(ProjectsController.name);
+  }
 
   @Post()
   create(@Body() createProjectDto: CreateProjectDto): Promise<Project> {
-    Logger.debug({ createProjectDto });
+    this.logger.log({ createProjectDto });
     return this.projectsService.create(createProjectDto);
   }
 
@@ -29,8 +38,18 @@ export class ProjectsController {
     return this.projectsService.findAll();
   }
 
-  @Get('/:id')
+  @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number): Promise<Project> {
     return this.projectsService.findOne(id);
+  }
+
+  @Patch(':id')
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateProjectDto: UpdateProjectDto,
+  ): Promise<void> {
+    this.logger.log({ id, updateProjectDto });
+
+    return this.projectsService.update(id, updateProjectDto);
   }
 }

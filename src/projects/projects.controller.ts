@@ -9,11 +9,13 @@ import {
   Patch,
   Post,
   Query,
+  Res,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
+import { Response } from 'express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 
@@ -62,6 +64,11 @@ export class ProjectsController {
   @Get()
   findAll(@Query() projectsFilterDto: ProjectsFilterDto): Promise<Project[]> {
     return this.projectsService.findAll(projectsFilterDto);
+  }
+
+  @Get('project-files/:fileUrl')
+  findProjectFile(@Res() res: Response, @Param('fileUrl') url: string) {
+    return res.sendFile(url, { root: './storage/uploads/projects' });
   }
 
   @Get(':id')

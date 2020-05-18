@@ -7,6 +7,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+import { Status } from '../enums/status.enum';
+
 @Entity()
 export class Project extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -20,6 +22,12 @@ export class Project extends BaseEntity {
 
   @Column({ nullable: true })
   fileUrl?: string;
+
+  @Column()
+  status: Status;
+
+  @Column({ nullable: true })
+  price?: number;
 
   @CreateDateColumn()
   createdAt: Date;

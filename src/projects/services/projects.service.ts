@@ -56,13 +56,15 @@ export class ProjectsService {
       this.removeFile(project.fileUrl);
     }
 
-    const { title, details } = updateProjectDto;
+    const { title, details, status, price } = updateProjectDto;
 
     project.title = title ?? project.title;
     project.details = details ?? project.details;
-    project.fileUrl = file?.path ?? project.fileUrl;
+    project.fileUrl = file?.path ?? project?.fileUrl;
+    project.status = status ?? project.status;
+    project.price = price ?? project?.price;
 
-    await project.save();
+    this.logger.log(await project.save());
   }
 
   async delete(id: number): Promise<void> {

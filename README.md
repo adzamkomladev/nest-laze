@@ -73,3 +73,20 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
   Nest is [MIT licensed](LICENSE).
+
+## Instructions
+
+- Place the .dev.env file in the root folder of the project.
+- Fill with your own variables.
+- Create the database you will use.
+
+
+## Routes
+
+- Create project - /projects (POST request)
+- All projects (including filtering capabilities using query parameter) - /projects?search=topic (GET request)
+- Update project - /projects/:id (PATCH request)
+- Delete project - /projects/:id (DELETE request)
+- Retrieve project file - /projects/project-files/:file-name (GET request)
+
+NB: Create project and Update project routes can take a file called file.

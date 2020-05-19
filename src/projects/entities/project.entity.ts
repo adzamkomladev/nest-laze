@@ -29,6 +29,9 @@ export class Project extends BaseEntity {
   @Column({ nullable: true })
   price?: number;
 
+  @Column()
+  deadline: Date;
+
   @CreateDateColumn()
   createdAt: Date;
 

@@ -1,4 +1,10 @@
-import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  IsDate,
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 import { Status } from '../enums/status.enum';
 
@@ -18,4 +24,8 @@ export class UpdateProjectDto {
   @IsOptional()
   @IsNumber()
   readonly price?: number;
+
+  @IsOptional()
+  @IsDate()
+  readonly deadline?: Date;
 }

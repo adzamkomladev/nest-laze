@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsDate, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateProjectDto {
   @IsNotEmpty()
@@ -8,4 +8,8 @@ export class CreateProjectDto {
   @IsNotEmpty()
   @IsString()
   readonly details: string;
+
+  @IsNotEmpty()
+  @IsDate()
+  readonly deadline: Date;
 }

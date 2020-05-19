@@ -56,13 +56,14 @@ export class ProjectsService {
       this.removeFile(project.fileUrl);
     }
 
-    const { title, details, status, price } = updateProjectDto;
+    const { title, details, status, price, deadline } = updateProjectDto;
 
     project.title = title ?? project.title;
     project.details = details ?? project.details;
     project.fileUrl = file?.path ?? project?.fileUrl;
     project.status = status ?? project.status;
     project.price = price ?? project?.price;
+    project.deadline = deadline ?? project.deadline;
 
     this.logger.log(await project.save());
   }

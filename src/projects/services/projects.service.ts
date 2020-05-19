@@ -15,6 +15,9 @@ import { Project } from '../entities/project.entity';
 import { CreateProjectDto } from '../dtos/create-project.dto';
 import { UpdateProjectDto } from '../dtos/update-project.dto';
 import { ProjectsFilterDto } from '../dtos/projects-filter.dto';
+import { SubmitProjectDto } from '../dtos/submit-project.dto';
+
+import { Status } from '../enums/status.enum';
 
 @Injectable()
 export class ProjectsService {
@@ -76,6 +79,27 @@ export class ProjectsService {
     if (removedProject.fileUrl) {
       this.removeFile(removedProject.fileUrl);
     }
+  }
+
+  async submit(
+    id: number,
+    submitProjectDto: SubmitProjectDto,
+    file?: any,
+  ): Promise<void> {
+    const project = await this.findOne(id);
+
+    if (project.submittedFileUrl) {
+      this.removeFile(project.submittedFileUrl);
+    }
+
+    const { submitText } = submitProjectDto;
+
+    project.submitText = submitText ?? project?.submitText;
+    project.submittedFileUrl = file?.path ?? project?.submittedFileUrl;
+    project.dateSubmitted = new Date();
+    project.status = Status.SUBMITTED;
+
+    this.logger.log(await project.save());
   }
 
   private removeFile(filePath: string): void {

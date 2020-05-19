@@ -84,9 +84,13 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## Routes
 
 - Create project - /projects (POST request)
+    - Takes status, title, details, deadline and file form data fields
 - All projects (including filtering capabilities using query parameter) - /projects?search=topic (GET request)
 - Update project - /projects/:id (PATCH request)
+    - Takes status, title, price, details, deadline and file form data fields
 - Delete project - /projects/:id (DELETE request)
 - Retrieve project file - /projects/project-files/:file-name (GET request)
-
-NB: Create project and Update project routes can take a file called file.
+- Project submission - /projects/:id/submit (PATCH request)
+    - Takes submitText and file form data fields
+    
+NB: Create project, Update project and Project submission routes can take a file called file.

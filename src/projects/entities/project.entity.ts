@@ -32,6 +32,15 @@ export class Project extends BaseEntity {
   @Column()
   deadline: Date;
 
+  @Column({ nullable: true })
+  submitText?: string;
+
+  @Column({ nullable: true })
+  submittedFileUrl?: string;
+
+  @Column({ nullable: true })
+  dateSubmitted?: Date;
+
   @CreateDateColumn()
   createdAt: Date;
 

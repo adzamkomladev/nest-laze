@@ -12,6 +12,7 @@ import {
   Res,
   UploadedFile,
   UseInterceptors,
+  ValidationPipe,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
@@ -26,6 +27,7 @@ import { Project } from './entities/project.entity';
 import { CreateProjectDto } from './dtos/create-project.dto';
 import { UpdateProjectDto } from './dtos/update-project.dto';
 import { ProjectsFilterDto } from './dtos/projects-filter.dto';
+import { SubmitProjectDto } from './dtos/submit-project.dto';
 
 @Controller('projects')
 export class ProjectsController {
@@ -54,7 +56,7 @@ export class ProjectsController {
     }),
   )
   create(
-    @Body() createProjectDto: CreateProjectDto,
+    @Body(ValidationPipe) createProjectDto: CreateProjectDto,
     @UploadedFile() file,
   ): Promise<Project> {
     this.logger.log({ createProjectDto });
@@ -62,7 +64,9 @@ export class ProjectsController {
   }
 
   @Get()
-  findAll(@Query() projectsFilterDto: ProjectsFilterDto): Promise<Project[]> {
+  findAll(
+    @Query(ValidationPipe) projectsFilterDto: ProjectsFilterDto,
+  ): Promise<Project[]> {
     return this.projectsService.findAll(projectsFilterDto);
   }
 
@@ -96,7 +100,7 @@ export class ProjectsController {
   )
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updateProjectDto: UpdateProjectDto,
+    @Body(ValidationPipe) updateProjectDto: UpdateProjectDto,
     @UploadedFile() file,
   ): Promise<void> {
     this.logger.log({ id, updateProjectDto });
@@ -107,5 +111,33 @@ export class ProjectsController {
   @Delete(':id')
   delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return this.projectsService.delete(id);
+  }
+
+  @Patch(':id/submit')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './storage/uploads/projects',
+        filename: (req, file, cb) => {
+          // Generating a 32 random chars long string
+          const randomName = Array(32)
+            .fill(null)
+            .map(() => Math.round(Math.random() * 16).toString(16))
+            .join('');
+
+          //Calling the callback passing the random name generated with the original extension name
+          cb(null, `${randomName}${extname(file.originalname)}`);
+        },
+      }),
+    }),
+  )
+  submit(
+    @Param('id', ParseIntPipe) id: number,
+    @Body(ValidationPipe) submitProjectDto: SubmitProjectDto,
+    @UploadedFile() file,
+  ): Promise<void> {
+    this.logger.log({ id, submitProjectDto });
+
+    return this.projectsService.submit(id, submitProjectDto, file);
   }
 }

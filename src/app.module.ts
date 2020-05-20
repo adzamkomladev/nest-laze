@@ -6,6 +6,7 @@ import databaseConfig from './config/database.config';
 import appConfig from './config/app.config';
 
 import { ProjectsModule } from './projects/projects.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ProjectsModule } from './projects/projects.module';
       inject: [ConfigService],
     }),
     ProjectsModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

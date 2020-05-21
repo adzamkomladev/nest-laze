@@ -1,8 +1,14 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 
 import { UserRepository } from '../repositories/user.repository';
+
+import { User } from '../entities/user.entity';
 
 import { AuthCredentialsDto } from '../dtos/auth-credentials.dto';
 
@@ -35,5 +41,13 @@ export class AuthService {
     const accessToken = this.jwtService.sign(payload);
 
     return { accessToken };
+  }
+
+  async findOne(id: number): Promise<User> {
+    try {
+      return await this.userRepository.findOneOrFail(id);
+    } catch (error) {
+      throw new NotFoundException(`User with id: '${id}' not found!`);
+    }
   }
 }

@@ -3,6 +3,8 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
   UpdateDateColumn,
@@ -10,6 +12,8 @@ import {
 
 import { Exclude } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
+
+import { Project } from '../../projects/entities/project.entity';
 
 @Entity()
 @Unique(['username'])
@@ -25,10 +29,18 @@ export class User extends BaseEntity {
   password: string;
 
   @Column()
+  @Exclude()
   salt: string;
 
   @Column({ default: false })
   approved: boolean;
+
+  @OneToMany(
+    type => Project,
+    project => project.owner,
+  )
+  @JoinColumn({ name: 'ownerId' })
+  projects: Project[];
 
   @CreateDateColumn()
   createdAt: Date;

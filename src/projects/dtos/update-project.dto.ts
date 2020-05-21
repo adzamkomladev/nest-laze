@@ -1,7 +1,9 @@
 import {
-  IsDate,
+  IsDateString,
   IsEnum,
+  IsInt,
   IsNumber,
+  IsNumberString,
   IsOptional,
   IsString,
 } from 'class-validator';
@@ -26,6 +28,10 @@ export class UpdateProjectDto {
   readonly price?: number;
 
   @IsOptional()
-  @IsDate()
+  @IsDateString()
   readonly deadline?: Date;
+
+  @IsOptional()
+  @IsNumberString()
+  readonly assigneeId?: number;
 }

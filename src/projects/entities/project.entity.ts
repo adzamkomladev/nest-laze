@@ -3,9 +3,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
+import { User } from '../../auth/entities/user.entity';
 
 import { Status } from '../enums/status.enum';
 
@@ -40,6 +44,31 @@ export class Project extends BaseEntity {
 
   @Column({ nullable: true })
   dateSubmitted?: Date;
+
+  @Column()
+  ownerId: number;
+
+  @ManyToOne(
+    type => User,
+    user => user.projects,
+    { eager: false },
+  )
+  @JoinColumn({ name: 'ownerId' })
+  owner: User;
+
+  @Column({ nullable: true })
+  assigneeId?: number;
+
+  @ManyToOne(
+    type => User,
+    user => user.projects,
+    { eager: false },
+  )
+  @JoinColumn({ name: 'assigneeId' })
+  assignee?: User;
+
+  @Column({ nullable: true })
+  dateAssigned?: Date;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -1,6 +1,7 @@
 import { EntityRepository, Repository } from 'typeorm';
 
 import { Project } from '../entities/project.entity';
+import { User } from '../../auth/entities/user.entity';
 
 import { CreateProjectDto } from '../dtos/create-project.dto';
 import { ProjectsFilterDto } from '../dtos/projects-filter.dto';
@@ -26,9 +27,10 @@ export class ProjectRepository extends Repository<Project> {
 
   createProject(
     createProjectDto: CreateProjectDto,
+    owner: User,
     fileUrl?: string,
   ): Promise<Project> {
-    const { title, details } = createProjectDto;
+    const { title, details, deadline } = createProjectDto;
 
     const project = this.create();
 
@@ -36,6 +38,8 @@ export class ProjectRepository extends Repository<Project> {
     project.details = details;
     project.fileUrl = fileUrl;
     project.status = Status.INITIATED;
+    project.ownerId = owner.id;
+    project.deadline = deadline;
 
     return project.save();
   }

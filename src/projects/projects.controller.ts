@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -11,10 +12,12 @@ import {
   Query,
   Res,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
   ValidationPipe,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { AuthGuard } from '@nestjs/passport';
 
 import { Response } from 'express';
 import { diskStorage } from 'multer';
@@ -23,13 +26,17 @@ import { extname } from 'path';
 import { ProjectsService } from './services/projects.service';
 
 import { Project } from './entities/project.entity';
+import { User } from '../auth/entities/user.entity';
 
 import { CreateProjectDto } from './dtos/create-project.dto';
 import { UpdateProjectDto } from './dtos/update-project.dto';
 import { ProjectsFilterDto } from './dtos/projects-filter.dto';
 import { SubmitProjectDto } from './dtos/submit-project.dto';
 
+import { GetUser } from '../auth/decorators/get-user.decorator';
+
 @Controller('projects')
+@UseGuards(AuthGuard())
 export class ProjectsController {
   private readonly logger: Logger;
 
@@ -49,7 +56,7 @@ export class ProjectsController {
             .map(() => Math.round(Math.random() * 16).toString(16))
             .join('');
 
-          //Calling the callback passing the random name generated with the original extension name
+          // Calling the callback passing the random name generated with the original extension name
           cb(null, `${randomName}${extname(file.originalname)}`);
         },
       }),
@@ -58,9 +65,10 @@ export class ProjectsController {
   create(
     @Body(ValidationPipe) createProjectDto: CreateProjectDto,
     @UploadedFile() file,
+    @GetUser() user: User,
   ): Promise<Project> {
-    this.logger.log({ createProjectDto });
-    return this.projectsService.create(createProjectDto, file);
+    this.logger.log({ createProjectDto, user });
+    return this.projectsService.create(createProjectDto, user, file);
   }
 
   @Get()
@@ -71,11 +79,16 @@ export class ProjectsController {
   }
 
   @Get('project-files/:fileUrl')
-  findProjectFile(@Res() res: Response, @Param('fileUrl') url: string) {
+  findProjectFile(
+    @Res() res: Response,
+    @Param('fileUrl') url: string,
+    @GetUser() user: User,
+  ) {
     return res.sendFile(url, { root: './storage/uploads/projects' });
   }
 
   @Get(':id')
+  @UseInterceptors(ClassSerializerInterceptor)
   findOne(@Param('id', ParseIntPipe) id: number): Promise<Project> {
     return this.projectsService.findOne(id);
   }
@@ -102,6 +115,7 @@ export class ProjectsController {
     @Param('id', ParseIntPipe) id: number,
     @Body(ValidationPipe) updateProjectDto: UpdateProjectDto,
     @UploadedFile() file,
+    @GetUser() user: User,
   ): Promise<void> {
     this.logger.log({ id, updateProjectDto });
 
@@ -109,7 +123,10 @@ export class ProjectsController {
   }
 
   @Delete(':id')
-  delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
+  delete(
+    @Param('id', ParseIntPipe) id: number,
+    @GetUser() user: User,
+  ): Promise<void> {
     return this.projectsService.delete(id);
   }
 
@@ -135,6 +152,7 @@ export class ProjectsController {
     @Param('id', ParseIntPipe) id: number,
     @Body(ValidationPipe) submitProjectDto: SubmitProjectDto,
     @UploadedFile() file,
+    @GetUser() user: User,
   ): Promise<void> {
     this.logger.log({ id, submitProjectDto });
 

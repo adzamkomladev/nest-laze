@@ -11,6 +11,7 @@ const fs = require('fs');
 import { ProjectRepository } from '../repositories/project.repository';
 
 import { Project } from '../entities/project.entity';
+import { User } from '../../auth/entities/user.entity';
 
 import { CreateProjectDto } from '../dtos/create-project.dto';
 import { UpdateProjectDto } from '../dtos/update-project.dto';
@@ -36,16 +37,26 @@ export class ProjectsService {
 
   async findOne(id: number): Promise<Project> {
     try {
-      return await this.projectsRepository.findOneOrFail(id);
+      return await this.projectsRepository.findOneOrFail(id, {
+        relations: ['owner', 'assignee'],
+      });
     } catch (error) {
       throw new NotFoundException(`Project with id: '${id}' not found!`);
     }
   }
 
-  create(createProjectDto: CreateProjectDto, file?: any): Promise<Project> {
+  create(
+    createProjectDto: CreateProjectDto,
+    owner: User,
+    file?: any,
+  ): Promise<Project> {
     const fileUrl = file?.path;
 
-    return this.projectsRepository.createProject(createProjectDto, fileUrl);
+    return this.projectsRepository.createProject(
+      createProjectDto,
+      owner,
+      fileUrl,
+    );
   }
 
   async update(
@@ -59,7 +70,14 @@ export class ProjectsService {
       this.removeFile(project.fileUrl);
     }
 
-    const { title, details, status, price, deadline } = updateProjectDto;
+    const {
+      title,
+      details,
+      status,
+      price,
+      deadline,
+      assigneeId,
+    } = updateProjectDto;
 
     project.title = title ?? project.title;
     project.details = details ?? project.details;
@@ -67,6 +85,11 @@ export class ProjectsService {
     project.status = status ?? project.status;
     project.price = price ?? project?.price;
     project.deadline = deadline ?? project.deadline;
+
+    if (assigneeId) {
+      project.assigneeId = assigneeId;
+      project.dateAssigned = new Date();
+    }
 
     this.logger.log(await project.save());
   }

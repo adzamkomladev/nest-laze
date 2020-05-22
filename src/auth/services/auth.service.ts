@@ -11,6 +11,7 @@ import { UserRepository } from '../repositories/user.repository';
 import { User } from '../entities/user.entity';
 
 import { AuthCredentialsDto } from '../dtos/auth-credentials.dto';
+import { UsersFilterDto } from '../../users/dtos/users-filter.dto';
 
 import { JwtPayload } from '../interfaces/jwt-payload.interface';
 
@@ -49,5 +50,9 @@ export class AuthService {
     } catch (error) {
       throw new NotFoundException(`User with id: '${id}' not found!`);
     }
+  }
+
+  findAll(usersFilterDto: UsersFilterDto): Promise<User[]> {
+    return this.userRepository.filterUsers(usersFilterDto);
   }
 }

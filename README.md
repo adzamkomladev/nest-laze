@@ -85,12 +85,31 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 - Create project - /projects (POST request)
     - Takes status, title, details, deadline and file form data fields
+
 - All projects (including filtering capabilities using query parameter) - /projects?search=topic (GET request)
+
 - Update project - /projects/:id (PATCH request)
-    - Takes status, title, price, details, deadline and file form data fields
+    - Takes status, title, price, details, deadline, assigneeId and file form data fields
+
 - Delete project - /projects/:id (DELETE request)
+
 - Retrieve project file - /projects/project-files/:file-name (GET request)
+
 - Project submission - /projects/:id/submit (PATCH request)
     - Takes submitText and file form data fields
+
+- Sign up - /auth/sign-up (POST request)
+    - Takes a username and password form data fields
+    - username must be more than 4 letters
+    - password must be more than 8, must have at least one uppercase letter, number and special character.
+    - new user must be confirmed before access to the system is allowed
+
+- Sign in - /auth/sign-in (POST request)
+    - Takes a username and password form data fields
+    - username must be more than 4 letters
+    - password must be more than 8, must have at least one uppercase letter, number and special character.
+    - returns accessToken string
+    
+- Retrieve all users (including filtering capabilities using query parameter) - /users?search=kofi (GET request)
     
 NB: Create project, Update project and Project submission routes can take a file called file.

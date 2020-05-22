@@ -9,6 +9,7 @@ import * as bcrypt from 'bcrypt';
 import { User } from '../entities/user.entity';
 
 import { AuthCredentialsDto } from '../dtos/auth-credentials.dto';
+import { UsersFilterDto } from '../../users/dtos/users-filter.dto';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
@@ -45,6 +46,23 @@ export class UserRepository extends Repository<User> {
     }
 
     return null;
+  }
+
+  filterUsers(usersFilterDto: UsersFilterDto): Promise<User[]> {
+    const { search } = usersFilterDto;
+
+    const query = this.createQueryBuilder('user');
+
+    if (search) {
+      query.andWhere(
+        'user.username LIKE :search OR user.username LIKE :search',
+        {
+          search: `%${search}%`,
+        },
+      );
+    }
+
+    return query.getMany();
   }
 
   private static hashPassword(password: string, salt: string): Promise<string> {

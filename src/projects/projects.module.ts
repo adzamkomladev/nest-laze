@@ -3,6 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AuthModule } from '../auth/auth.module';
 
+import { ProjectAssigneeGuard } from './guards/project-assignee.guard';
+
 import { ProjectsController } from './projects.controller';
 
 import { ProjectsService } from './services/projects.service';
@@ -12,6 +14,6 @@ import { ProjectRepository } from './repositories/project.repository';
 @Module({
   imports: [TypeOrmModule.forFeature([ProjectRepository]), AuthModule],
   controllers: [ProjectsController],
-  providers: [ProjectsService],
+  providers: [ProjectsService, ProjectAssigneeGuard],
 })
 export class ProjectsModule {}

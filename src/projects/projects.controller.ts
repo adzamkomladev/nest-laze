@@ -34,6 +34,7 @@ import { ProjectsFilterDto } from './dtos/projects-filter.dto';
 import { SubmitProjectDto } from './dtos/submit-project.dto';
 
 import { GetUser } from '../auth/decorators/get-user.decorator';
+import { ProjectAssigneeGuard } from './guards/project-assignee.guard';
 
 @Controller('projects')
 @UseGuards(AuthGuard())
@@ -131,6 +132,7 @@ export class ProjectsController {
   }
 
   @Patch(':id/submit')
+  @UseGuards(ProjectAssigneeGuard)
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
@@ -152,7 +154,6 @@ export class ProjectsController {
     @Param('id', ParseIntPipe) id: number,
     @Body(ValidationPipe) submitProjectDto: SubmitProjectDto,
     @UploadedFile() file,
-    @GetUser() user: User,
   ): Promise<void> {
     this.logger.log({ id, submitProjectDto });
 

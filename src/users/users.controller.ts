@@ -2,6 +2,8 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Get,
+  Param,
+  ParseIntPipe,
   Query,
   UseGuards,
   UseInterceptors,
@@ -14,6 +16,7 @@ import { AuthService } from '../auth/services/auth.service';
 import { User } from '../auth/entities/user.entity';
 
 import { ProjectsFilterDto } from '../projects/dtos/projects-filter.dto';
+import { Project } from '../projects/entities/project.entity';
 
 @Controller('users')
 @UseGuards(AuthGuard())
@@ -26,5 +29,11 @@ export class UsersController {
     @Query(ValidationPipe) usersFilterDto: ProjectsFilterDto,
   ): Promise<User[]> {
     return this.authService.findAll(usersFilterDto);
+  }
+
+  @Get(':id')
+  @UseInterceptors(ClassSerializerInterceptor)
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<User> {
+    return this.authService.findOne(id);
   }
 }

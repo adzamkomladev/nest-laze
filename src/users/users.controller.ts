@@ -1,9 +1,11 @@
 import {
+  Body,
   ClassSerializerInterceptor,
   Controller,
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Query,
   UseGuards,
   UseInterceptors,
@@ -15,8 +17,8 @@ import { AuthService } from '../auth/services/auth.service';
 
 import { User } from '../auth/entities/user.entity';
 
-import { ProjectsFilterDto } from '../projects/dtos/projects-filter.dto';
-import { Project } from '../projects/entities/project.entity';
+import { UpdateUserDto } from './dtos/update-user.dto';
+import { UsersFilterDto } from './dtos/users-filter.dto';
 
 @Controller('users')
 @UseGuards(AuthGuard())
@@ -26,7 +28,7 @@ export class UsersController {
   @Get()
   @UseInterceptors(ClassSerializerInterceptor)
   findAll(
-    @Query(ValidationPipe) usersFilterDto: ProjectsFilterDto,
+    @Query(ValidationPipe) usersFilterDto: UsersFilterDto,
   ): Promise<User[]> {
     return this.authService.findAll(usersFilterDto);
   }
@@ -35,5 +37,13 @@ export class UsersController {
   @UseInterceptors(ClassSerializerInterceptor)
   findOne(@Param('id', ParseIntPipe) id: number): Promise<User> {
     return this.authService.findOne(id);
+  }
+
+  @Patch(':id')
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body(ValidationPipe) updateUserDto: UpdateUserDto,
+  ): Promise<void> {
+    return this.authService.update(id, updateUserDto);
   }
 }

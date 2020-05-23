@@ -12,6 +12,7 @@ import { User } from '../entities/user.entity';
 
 import { AuthCredentialsDto } from '../dtos/auth-credentials.dto';
 import { UsersFilterDto } from '../../users/dtos/users-filter.dto';
+import { UpdateUserDto } from '../../users/dtos/update-user.dto';
 
 import { JwtPayload } from '../interfaces/jwt-payload.interface';
 
@@ -56,5 +57,15 @@ export class AuthService {
 
   findAll(usersFilterDto: UsersFilterDto): Promise<User[]> {
     return this.userRepository.filterUsers(usersFilterDto);
+  }
+
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<void> {
+    const user = await this.findOne(id);
+
+    const { approved } = updateUserDto;
+
+    user.approved = approved ?? user?.approved;
+
+    await user.save();
   }
 }

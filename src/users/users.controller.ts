@@ -13,6 +13,9 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
+import { RoleGuard } from '../auth/guards/role.guard';
+import { CurrentUserOrAdminGuard } from './guards/current-user-or-admin.guard';
+
 import { AuthService } from '../auth/services/auth.service';
 
 import { User } from '../auth/entities/user.entity';
@@ -21,7 +24,7 @@ import { UpdateUserDto } from './dtos/update-user.dto';
 import { UsersFilterDto } from './dtos/users-filter.dto';
 
 @Controller('users')
-@UseGuards(AuthGuard())
+@UseGuards(AuthGuard(), RoleGuard)
 export class UsersController {
   constructor(private readonly authService: AuthService) {}
 
@@ -40,6 +43,7 @@ export class UsersController {
   }
 
   @Patch(':id')
+  @UseGuards(CurrentUserOrAdminGuard)
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body(ValidationPipe) updateUserDto: UpdateUserDto,

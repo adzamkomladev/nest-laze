@@ -23,6 +23,9 @@ import { Response } from 'express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 
+import { ProjectAssigneeGuard } from './guards/project-assignee.guard';
+import { RoleGuard } from '../auth/guards/role.guard';
+
 import { ProjectsService } from './services/projects.service';
 
 import { Project } from './entities/project.entity';
@@ -34,10 +37,12 @@ import { ProjectsFilterDto } from './dtos/projects-filter.dto';
 import { SubmitProjectDto } from './dtos/submit-project.dto';
 
 import { GetUser } from '../auth/decorators/get-user.decorator';
-import { ProjectAssigneeGuard } from './guards/project-assignee.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+
+import { Role } from '../auth/enums/role.enum';
 
 @Controller('projects')
-@UseGuards(AuthGuard())
+@UseGuards(AuthGuard(), RoleGuard)
 export class ProjectsController {
   private readonly logger: Logger;
 
@@ -46,6 +51,7 @@ export class ProjectsController {
   }
 
   @Post()
+  @Roles(Role.STUDENT)
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
@@ -116,7 +122,6 @@ export class ProjectsController {
     @Param('id', ParseIntPipe) id: number,
     @Body(ValidationPipe) updateProjectDto: UpdateProjectDto,
     @UploadedFile() file,
-    @GetUser() user: User,
   ): Promise<void> {
     this.logger.log({ id, updateProjectDto });
 
@@ -124,14 +129,13 @@ export class ProjectsController {
   }
 
   @Delete(':id')
-  delete(
-    @Param('id', ParseIntPipe) id: number,
-    @GetUser() user: User,
-  ): Promise<void> {
+  @Roles(Role.ADMIN)
+  delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return this.projectsService.delete(id);
   }
 
   @Patch(':id/submit')
+  @Roles(Role.SERVICE_PROVIDER)
   @UseGuards(ProjectAssigneeGuard)
   @UseInterceptors(
     FileInterceptor('file', {

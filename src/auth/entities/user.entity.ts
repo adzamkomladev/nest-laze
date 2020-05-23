@@ -40,7 +40,14 @@ export class User extends BaseEntity {
     project => project.owner,
   )
   @JoinColumn({ name: 'ownerId' })
-  projects: Project[];
+  projectsOwned: Project[];
+
+  @OneToMany(
+    type => Project,
+    project => project.assignee,
+  )
+  @JoinColumn({ name: 'assigneeId' })
+  projectsAssigned: Project[];
 
   @CreateDateColumn()
   createdAt: Date;

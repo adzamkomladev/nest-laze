@@ -50,7 +50,7 @@ export class Project extends BaseEntity {
 
   @ManyToOne(
     type => User,
-    user => user.projects,
+    user => user.projectsOwned,
     { eager: false },
   )
   @JoinColumn({ name: 'ownerId' })
@@ -61,7 +61,7 @@ export class Project extends BaseEntity {
 
   @ManyToOne(
     type => User,
-    user => user.projects,
+    user => user.projectsAssigned,
     { eager: false },
   )
   @JoinColumn({ name: 'assigneeId' })

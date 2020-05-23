@@ -46,7 +46,9 @@ export class AuthService {
 
   async findOne(id: number): Promise<User> {
     try {
-      return await this.userRepository.findOneOrFail(id);
+      return await this.userRepository.findOneOrFail(id, {
+        relations: ['projectsOwned', 'projectsAssigned'],
+      });
     } catch (error) {
       throw new NotFoundException(`User with id: '${id}' not found!`);
     }

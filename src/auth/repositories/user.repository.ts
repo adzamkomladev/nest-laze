@@ -10,11 +10,12 @@ import { User } from '../entities/user.entity';
 
 import { AuthCredentialsDto } from '../dtos/auth-credentials.dto';
 import { UsersFilterDto } from '../../users/dtos/users-filter.dto';
+import { SignUpDto } from '../dtos/sign-up.dto';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
-  async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
-    const { username, password } = authCredentialsDto;
+  async signUp(signUpDto: SignUpDto): Promise<void> {
+    const { username, password, role } = signUpDto;
 
     const salt = await bcrypt.genSalt();
 
@@ -22,6 +23,7 @@ export class UserRepository extends Repository<User> {
     user.username = username;
     user.salt = salt;
     user.password = await UserRepository.hashPassword(password, salt);
+    user.role = role;
 
     try {
       await user.save();

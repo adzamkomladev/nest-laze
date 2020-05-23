@@ -15,6 +15,7 @@ import { UsersFilterDto } from '../../users/dtos/users-filter.dto';
 import { UpdateUserDto } from '../../users/dtos/update-user.dto';
 
 import { JwtPayload } from '../interfaces/jwt-payload.interface';
+import { SignUpDto } from '../dtos/sign-up.dto';
 
 @Injectable()
 export class AuthService {
@@ -24,8 +25,8 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
-    return this.userRepository.signUp(authCredentialsDto);
+  signUp(signUpDto: SignUpDto): Promise<void> {
+    return this.userRepository.signUp(signUpDto);
   }
 
   async signIn(

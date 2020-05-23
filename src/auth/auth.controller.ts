@@ -9,6 +9,7 @@ import {
 import { AuthService } from './services/auth.service';
 
 import { AuthCredentialsDto } from './dtos/auth-credentials.dto';
+import { SignUpDto } from './dtos/sign-up.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -16,7 +17,7 @@ export class AuthController {
 
   @Post('/sign-up')
   @UsePipes(ValidationPipe)
-  signUp(@Body(ValidationPipe) body: AuthCredentialsDto): Promise<void> {
+  signUp(@Body(ValidationPipe) body: SignUpDto): Promise<void> {
     return this.authService.signUp(body);
   }
 

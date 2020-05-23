@@ -14,6 +14,7 @@ import { Exclude } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
 
 import { Project } from '../../projects/entities/project.entity';
+import { Role } from '../enums/role.enum';
 
 @Entity()
 @Unique(['username'])
@@ -48,6 +49,9 @@ export class User extends BaseEntity {
   )
   @JoinColumn({ name: 'assigneeId' })
   projectsAssigned: Project[];
+
+  @Column()
+  role: Role;
 
   @CreateDateColumn()
   createdAt: Date;

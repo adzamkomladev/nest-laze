@@ -1,8 +1,9 @@
-import { IsDateString, IsNotEmpty, IsString } from 'class-validator';
+import { IsDateString, IsNotEmpty, IsString, MaxLength } from 'class-validator';
 
 export class CreateProjectDto {
   @IsNotEmpty()
   @IsString()
+  @MaxLength(255)
   readonly title: string;
 
   @IsNotEmpty()

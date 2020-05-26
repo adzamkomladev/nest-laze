@@ -21,7 +21,7 @@ export class Project extends BaseEntity {
   @Column()
   title: string;
 
-  @Column()
+  @Column('text')
   details: string;
 
   @Column({ nullable: true })
@@ -36,7 +36,7 @@ export class Project extends BaseEntity {
   @Column()
   deadline: Date;
 
-  @Column({ nullable: true })
+  @Column('text', { nullable: true })
   submitText?: string;
 
   @Column({ nullable: true })

@@ -6,6 +6,7 @@ import {
   IsNumberString,
   IsOptional,
   IsString,
+  MaxLength,
 } from 'class-validator';
 
 import { Status } from '../enums/status.enum';
@@ -13,6 +14,7 @@ import { Status } from '../enums/status.enum';
 export class UpdateProjectDto {
   @IsOptional()
   @IsString()
+  @MaxLength(255)
   readonly title?: string;
 
   @IsOptional()

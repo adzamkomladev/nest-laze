@@ -14,6 +14,7 @@ import { Exclude } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
 
 import { Project } from '../../projects/entities/project.entity';
+
 import { Role } from '../enums/role.enum';
 
 @Entity()
@@ -22,7 +23,7 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ length: 20 })
   username: string;
 
   @Column()
@@ -52,6 +53,24 @@ export class User extends BaseEntity {
 
   @Column()
   role: Role;
+
+  @Column({ nullable: true })
+  fullName?: string;
+
+  @Column({ nullable: true })
+  dateOfBirth?: Date;
+
+  @Column({ nullable: true })
+  careerDetails?: string;
+
+  @Column({ length: 13, nullable: true })
+  telephone?: string;
+
+  @Column({ nullable: true })
+  email?: string;
+
+  @Column({ nullable: true })
+  profileImageUrl?: string;
 
   @CreateDateColumn()
   createdAt: Date;

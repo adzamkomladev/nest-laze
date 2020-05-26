@@ -35,10 +35,8 @@ export class UsersController {
 
   @Get()
   @UseInterceptors(ClassSerializerInterceptor)
-  findAll(
-    @Query(ValidationPipe) usersFilterDto: UsersFilterDto,
-  ): Promise<User[]> {
-    return this.authService.findAll(usersFilterDto);
+  findAll(@Query(ValidationPipe) query: UsersFilterDto): Promise<User[]> {
+    return this.authService.findAll(query);
   }
 
   @Get(':id')
@@ -68,9 +66,9 @@ export class UsersController {
   )
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body(ValidationPipe) updateUserDto: UpdateUserDto,
+    @Body(ValidationPipe) body: UpdateUserDto,
     @UploadedFile() file,
   ): Promise<void> {
-    return this.authService.update(id, updateUserDto, file);
+    return this.authService.update(id, body, file);
   }
 }

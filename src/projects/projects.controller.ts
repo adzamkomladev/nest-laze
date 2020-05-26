@@ -70,19 +70,17 @@ export class ProjectsController {
     }),
   )
   create(
-    @Body(ValidationPipe) createProjectDto: CreateProjectDto,
+    @Body(ValidationPipe) body: CreateProjectDto,
     @UploadedFile() file,
     @GetUser() user: User,
   ): Promise<Project> {
-    this.logger.log({ createProjectDto, user });
-    return this.projectsService.create(createProjectDto, user, file);
+    this.logger.log({ body, user });
+    return this.projectsService.create(body, user, file);
   }
 
   @Get()
-  findAll(
-    @Query(ValidationPipe) projectsFilterDto: ProjectsFilterDto,
-  ): Promise<Project[]> {
-    return this.projectsService.findAll(projectsFilterDto);
+  findAll(@Query(ValidationPipe) query: ProjectsFilterDto): Promise<Project[]> {
+    return this.projectsService.findAll(query);
   }
 
   @Get('project-files/:fileUrl')
@@ -120,12 +118,12 @@ export class ProjectsController {
   )
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body(ValidationPipe) updateProjectDto: UpdateProjectDto,
+    @Body(ValidationPipe) body: UpdateProjectDto,
     @UploadedFile() file,
   ): Promise<void> {
-    this.logger.log({ id, updateProjectDto });
+    this.logger.log({ id, body });
 
-    return this.projectsService.update(id, updateProjectDto, file);
+    return this.projectsService.update(id, body, file);
   }
 
   @Delete(':id')
@@ -156,11 +154,11 @@ export class ProjectsController {
   )
   submit(
     @Param('id', ParseIntPipe) id: number,
-    @Body(ValidationPipe) submitProjectDto: SubmitProjectDto,
+    @Body(ValidationPipe) body: SubmitProjectDto,
     @UploadedFile() file,
   ): Promise<void> {
-    this.logger.log({ id, submitProjectDto });
+    this.logger.log({ id, body });
 
-    return this.projectsService.submit(id, submitProjectDto, file);
+    return this.projectsService.submit(id, body, file);
   }
 }

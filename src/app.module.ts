@@ -8,6 +8,8 @@ import appConfig from './config/app.config';
 import { ProjectsModule } from './projects/projects.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { ChatsModule } from './chats/chats.module';
+import { ChatsGateway } from './chats/gateways/chats.gateway';
 
 @Module({
   imports: [
@@ -24,6 +26,7 @@ import { UsersModule } from './users/users.module';
     ProjectsModule,
     AuthModule,
     UsersModule,
+    ChatsModule,
   ],
 })
 export class AppModule {}

@@ -14,6 +14,7 @@ import { Exclude } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
 
 import { Project } from '../../projects/entities/project.entity';
+import { Chat } from '../../chats/entities/chat.entity';
 
 import { Role } from '../enums/role.enum';
 
@@ -71,6 +72,20 @@ export class User extends BaseEntity {
 
   @Column({ nullable: true })
   profileImageUrl?: string;
+
+  @OneToMany(
+    type => Chat,
+    chat => chat.userOne,
+  )
+  @JoinColumn({ name: 'userOneId' })
+  chatOne: Chat[];
+
+  @OneToMany(
+    type => Chat,
+    chat => chat.userTwo,
+  )
+  @JoinColumn({ name: 'userTwoId' })
+  chatTwo: Chat[];
 
   @CreateDateColumn()
   createdAt: Date;

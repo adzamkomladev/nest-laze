@@ -66,7 +66,7 @@ export class ProjectsService {
   ): Promise<void> {
     const project = await this.findOne(id);
 
-    if (project.fileUrl) {
+    if (project.fileUrl && file) {
       this.removeFile(project.fileUrl);
     }
 

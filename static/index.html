@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Web socket test</title>
+    <style>
+      #messages {
+        height: 300px;
+        overflow-y: scroll;
+      }
+
+      #app {
+        margin-top: 2rem;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.socket.io/socket.io-1.4.5.js"
+    ></script>
+  </head>
+  <body>
+    <div id="app" class="container">
+      <div class="row">
+        <div class="col-md-6 offset-md-3 col-sm-12">
+          <h1 class="text-center">{{ title }}</h1>
+          <br />
+          <div id="status"></div>
+          <div id="chat">
+            <input
+              type="text"
+              v-model="name"
+              id="username"
+              class="form-control"
+              placeholder="Enter name..."
+            />
+            <br />
+            <div class="card">
+              <div id="messages" class="card-block">
+                <ul>
+                  <li v-for="message of messages">
+                    {{ message.name }}: {{ message.text }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <br />
+            <textarea
+              id="textarea"
+              class="form-control"
+              v-model="text"
+              placeholder="Enter message..."
+            ></textarea>
+            <br />
+            <button id="send" class="btn" @click.prevent="sendMessage">
+              Send
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const app = new Vue({
+        el: '#app',
+        data: {
+          title: 'Nestjs Websockets Chat',
+          name: '',
+          text: '',
+          messages: [],
+          socket: null,
+        },
+        methods: {
+          sendMessage() {
+            if (this.validateInput()) {
+              const message = {
+                name: this.name,
+                text: this.text,
+              };
+              this.socket.emit('messageToServer', message);
+              this.text = '';
+            }
+          },
+          receivedMessage(message) {
+            this.messages.push(message);
+          },
+          validateInput() {
+            return this.name.length > 0 && this.text.length > 0;
+          },
+        },
+        created() {
+          this.socket = io('http://localhost:3000');
+          this.socket.on('messageToClient', message => {
+            this.receivedMessage(message);
+          });
+        },
+      });
+    </script>
+  </body>
+</html>

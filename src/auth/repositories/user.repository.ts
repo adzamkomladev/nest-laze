@@ -14,7 +14,6 @@ import { SignUpDto } from '../dtos/sign-up.dto';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
-
   async signUp(signUpDto: SignUpDto): Promise<void> {
     const { username, password, role } = signUpDto;
 
@@ -29,7 +28,7 @@ export class UserRepository extends Repository<User> {
     try {
       await user.save();
     } catch (error) {
-      if (error.code === 'ER_DUP_ENTRY') {
+      if (error.code === '23505') {
         throw new ConflictException('Username already exists.');
       } else {
         throw new InternalServerErrorException();

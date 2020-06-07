@@ -3,6 +3,7 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Get,
+  HttpCode,
   Param,
   ParseIntPipe,
   Patch,
@@ -46,6 +47,7 @@ export class UsersController {
   }
 
   @Patch(':id')
+  @HttpCode(204)
   @UseGuards(CurrentUserOrAdminGuard)
   @UseInterceptors(
     FileInterceptor('file', {

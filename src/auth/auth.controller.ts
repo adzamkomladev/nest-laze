@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  HttpCode,
   Post,
   UsePipes,
   ValidationPipe,
@@ -22,6 +23,7 @@ export class AuthController {
   }
 
   @Post('/sign-in')
+  @HttpCode(200)
   @UsePipes(ValidationPipe)
   signIn(
     @Body(ValidationPipe) body: AuthCredentialsDto,

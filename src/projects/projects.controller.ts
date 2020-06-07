@@ -3,7 +3,7 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Delete,
-  Get,
+  Get, HttpCode,
   Logger,
   Param,
   ParseIntPipe,
@@ -99,6 +99,7 @@ export class ProjectsController {
   }
 
   @Patch(':id')
+  @HttpCode(204)
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
@@ -127,12 +128,14 @@ export class ProjectsController {
   }
 
   @Delete(':id')
+  @HttpCode(204)
   @Roles(Role.ADMIN)
   delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return this.projectsService.delete(id);
   }
 
   @Patch(':id/submit')
+  @HttpCode(204)
   @Roles(Role.SERVICE_PROVIDER)
   @UseGuards(ProjectAssigneeGuard)
   @UseInterceptors(

@@ -1,5 +1,7 @@
 import {
+  IsBoolean,
   IsNotEmpty,
+  IsOptional,
   IsString,
   Matches,
   MaxLength,
@@ -25,4 +27,8 @@ export class AuthCredentialsDto {
     },
   )
   readonly password: string;
+
+  @IsOptional()
+  @IsBoolean()
+  readonly remember?: boolean;
 }

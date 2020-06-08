@@ -9,5 +9,7 @@ export class CreateMessageDto {
   @IsString()
   readonly text: string;
 
+  @IsNotEmpty()
+  @IsInt()
   readonly senderId: number;
 }

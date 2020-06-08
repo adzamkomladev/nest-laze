@@ -1,9 +1,10 @@
 import {
-  Body,
+  Body, ClassSerializerInterceptor,
   Controller,
+  Get,
   HttpCode,
   Post,
-  UseGuards,
+  UseGuards, UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -36,8 +37,9 @@ export class AuthController {
     return this.authService.signIn(body);
   }
 
-  @Post('/me')
+  @Get('/me')
   @UseGuards(AuthGuard())
+  @UseInterceptors(ClassSerializerInterceptor)
   currentUser(@GetUser() user: User): User {
     return user;
   }

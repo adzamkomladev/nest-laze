@@ -2,10 +2,13 @@ import {
   IsBoolean,
   IsDateString,
   IsEmail,
+  IsEnum,
   IsOptional,
   IsString,
   MaxLength,
 } from 'class-validator';
+
+import { Role } from '../../auth/enums/role.enum';
 
 export class UpdateUserDto {
   @IsOptional()
@@ -35,4 +38,8 @@ export class UpdateUserDto {
   @IsEmail()
   @MaxLength(255)
   readonly email?: string;
+
+  @IsOptional()
+  @IsEnum(Role)
+  readonly role?: Role;
 }

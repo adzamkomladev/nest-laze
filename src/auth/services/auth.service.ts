@@ -86,6 +86,7 @@ export class AuthService {
       careerDetails,
       email,
       telephone,
+      role,
     } = updateUserDto;
 
     user.approved = approved ?? user.approved;
@@ -94,6 +95,7 @@ export class AuthService {
     user.careerDetails = careerDetails ?? user?.careerDetails;
     user.email = email ?? user?.email;
     user.telephone = telephone ?? user?.telephone;
+    user.role = role ?? user?.role;
     user.profileImageUrl = file?.path ?? user?.profileImageUrl;
 
     await user.save();
@@ -105,7 +107,9 @@ export class AuthService {
     } catch (err) {
       this.logger.error({ err });
 
-      throw new InternalServerErrorException('Unable to update user profile imaage');
+      throw new InternalServerErrorException(
+        'Unable to update user profile imaage',
+      );
     }
   }
 }

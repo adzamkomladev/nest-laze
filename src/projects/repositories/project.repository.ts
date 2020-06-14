@@ -13,7 +13,9 @@ export class ProjectRepository extends Repository<Project> {
   filterProjects(projectsFilterDto: ProjectsFilterDto): Promise<Project[]> {
     const { search } = projectsFilterDto;
 
-    const query = this.createQueryBuilder('project');
+    const query = this.createQueryBuilder('project')
+      .leftJoinAndSelect('project.owner', 'owner')
+      .leftJoinAndSelect('project.assignee', 'assignee');
 
     if (search) {
       query.andWhere(

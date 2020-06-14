@@ -79,6 +79,7 @@ export class ProjectsController {
   }
 
   @Get()
+  @UseInterceptors(ClassSerializerInterceptor)
   findAll(@Query(ValidationPipe) query: ProjectsFilterDto): Promise<Project[]> {
     return this.projectsService.findAll(query);
   }

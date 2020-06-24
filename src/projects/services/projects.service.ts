@@ -1,12 +1,5 @@
-import {
-  Injectable,
-  InternalServerErrorException,
-  Logger,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-
-const fs = require('fs');
 
 import { ProjectRepository } from '../repositories/project.repository';
 
@@ -45,30 +38,12 @@ export class ProjectsService {
     }
   }
 
-  create(
-    createProjectDto: CreateProjectDto,
-    owner: User,
-    file?: any,
-  ): Promise<Project> {
-    const fileUrl = file?.path;
-
-    return this.projectsRepository.createProject(
-      createProjectDto,
-      owner,
-      fileUrl,
-    );
+  create(createProjectDto: CreateProjectDto, owner: User): Promise<Project> {
+    return this.projectsRepository.createProject(createProjectDto, owner);
   }
 
-  async update(
-    id: number,
-    updateProjectDto: UpdateProjectDto,
-    file?: any,
-  ): Promise<void> {
+  async update(id: number, updateProjectDto: UpdateProjectDto): Promise<void> {
     const project = await this.findOne(id);
-
-    if (project.fileUrl && file) {
-      this.removeFile(project.fileUrl);
-    }
 
     const {
       title,
@@ -77,11 +52,12 @@ export class ProjectsService {
       price,
       deadline,
       assigneeId,
+      fileUrl,
     } = updateProjectDto;
 
     project.title = title ?? project.title;
     project.details = details ?? project.details;
-    project.fileUrl = file?.path ?? project?.fileUrl;
+    project.fileUrl = fileUrl ?? project?.fileUrl;
     project.status = status ?? project.status;
     project.price = price ?? project?.price;
     project.deadline = deadline ?? project.deadline;
@@ -97,41 +73,19 @@ export class ProjectsService {
   async delete(id: number): Promise<void> {
     const project = await this.findOne(id);
 
-    const removedProject = await project.remove();
-
-    if (removedProject.fileUrl) {
-      this.removeFile(removedProject.fileUrl);
-    }
+    await project.remove();
   }
 
-  async submit(
-    id: number,
-    submitProjectDto: SubmitProjectDto,
-    file?: any,
-  ): Promise<void> {
+  async submit(id: number, submitProjectDto: SubmitProjectDto): Promise<void> {
     const project = await this.findOne(id);
 
-    if (project.submittedFileUrl) {
-      this.removeFile(project.submittedFileUrl);
-    }
-
-    const { submitText } = submitProjectDto;
+    const { submitText, submittedFileUrl } = submitProjectDto;
 
     project.submitText = submitText ?? project?.submitText;
-    project.submittedFileUrl = file?.path ?? project?.submittedFileUrl;
+    project.submittedFileUrl = submittedFileUrl ?? project?.submittedFileUrl;
     project.dateSubmitted = new Date();
     project.status = Status.SUBMITTED;
 
     this.logger.log(await project.save());
-  }
-
-  private removeFile(filePath: string): void {
-    try {
-      fs.unlinkSync(`./${filePath}`);
-    } catch (err) {
-      this.logger.error({ err });
-
-      throw new InternalServerErrorException('Unable to update project');
-    }
   }
 }

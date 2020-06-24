@@ -1,4 +1,11 @@
-import { IsDateString, IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import {
+  IsDateString,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUrl,
+  MaxLength,
+} from 'class-validator';
 
 export class CreateProjectDto {
   @IsNotEmpty()
@@ -13,4 +20,9 @@ export class CreateProjectDto {
   @IsNotEmpty()
   @IsDateString()
   readonly deadline: Date;
+
+  @IsOptional()
+  @IsString()
+  @IsUrl()
+  readonly fileUrl?: string;
 }

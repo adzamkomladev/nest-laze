@@ -30,9 +30,8 @@ export class ProjectRepository extends Repository<Project> {
   createProject(
     createProjectDto: CreateProjectDto,
     owner: User,
-    fileUrl?: string,
   ): Promise<Project> {
-    const { title, details, deadline } = createProjectDto;
+    const { title, details, deadline, fileUrl } = createProjectDto;
 
     const project = this.create();
 

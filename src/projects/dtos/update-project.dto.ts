@@ -6,6 +6,7 @@ import {
   IsNumberString,
   IsOptional,
   IsString,
+  IsUrl,
   MaxLength,
 } from 'class-validator';
 
@@ -36,4 +37,9 @@ export class UpdateProjectDto {
   @IsOptional()
   @IsNumberString()
   readonly assigneeId?: number;
+
+  @IsOptional()
+  @IsString()
+  @IsUrl()
+  readonly fileUrl?: string;
 }

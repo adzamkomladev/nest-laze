@@ -5,6 +5,7 @@ import {
   IsEnum,
   IsOptional,
   IsString,
+  IsUrl,
   MaxLength,
 } from 'class-validator';
 
@@ -42,4 +43,9 @@ export class UpdateUserDto {
   @IsOptional()
   @IsEnum(Role)
   readonly role?: Role;
+
+  @IsOptional()
+  @IsString()
+  @IsUrl()
+  readonly profileImageUrl?: string;
 }

@@ -1,14 +1,11 @@
 import {
   Injectable,
-  InternalServerErrorException,
   Logger,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
-
-const fs = require('fs');
 
 import { UserRepository } from '../repositories/user.repository';
 
@@ -68,16 +65,8 @@ export class AuthService {
     return this.userRepository.filterUsers(usersFilterDto);
   }
 
-  async update(
-    id: number,
-    updateUserDto: UpdateUserDto,
-    file?: any,
-  ): Promise<void> {
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<void> {
     const user = await this.findOne(id);
-
-    if (user.profileImageUrl && file) {
-      this.removeFile(user.profileImageUrl);
-    }
 
     const {
       approved,
@@ -87,6 +76,7 @@ export class AuthService {
       email,
       telephone,
       role,
+      profileImageUrl,
     } = updateUserDto;
 
     user.approved = approved ?? user.approved;
@@ -96,20 +86,8 @@ export class AuthService {
     user.email = email ?? user?.email;
     user.telephone = telephone ?? user?.telephone;
     user.role = role ?? user?.role;
-    user.profileImageUrl = file?.path ?? user?.profileImageUrl;
+    user.profileImageUrl = profileImageUrl ?? user?.profileImageUrl;
 
     await user.save();
-  }
-
-  private removeFile(filePath: string): void {
-    try {
-      fs.unlinkSync(`./${filePath}`);
-    } catch (err) {
-      this.logger.error({ err });
-
-      throw new InternalServerErrorException(
-        'Unable to update user profile imaage',
-      );
-    }
   }
 }

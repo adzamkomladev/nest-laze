@@ -11,8 +11,6 @@ async function bootstrap() {
   //const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const configService = app.get(ConfigService);
 
-  console.log(configService.get<number>('app.port'));
-
   app.setGlobalPrefix(configService.get<string>('app.version'));
 
   //app.useStaticAssets(join(__dirname, '..', 'static'));

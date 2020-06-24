@@ -8,16 +8,11 @@ import {
   ParseIntPipe,
   Patch,
   Query,
-  UploadedFile,
   UseGuards,
   UseInterceptors,
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { FileInterceptor } from '@nestjs/platform-express';
-
-import { diskStorage } from 'multer';
-import { extname } from 'path';
 
 import { RoleGuard } from '../auth/guards/role.guard';
 import { CurrentUserOrAdminGuard } from './guards/current-user-or-admin.guard';
@@ -49,28 +44,10 @@ export class UsersController {
   @Patch(':id')
   @HttpCode(204)
   @UseGuards(CurrentUserOrAdminGuard)
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './storage/uploads/users',
-        filename: (req, file, cb) => {
-          // Generating a 32 random chars long string
-          const randomName = Array(32)
-            .fill(null)
-            .map(() => Math.round(Math.random() * 16).toString(16))
-            .join('');
-
-          //Calling the callback passing the random name generated with the original extension name
-          cb(null, `${randomName}${extname(file.originalname)}`);
-        },
-      }),
-    }),
-  )
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body(ValidationPipe) body: UpdateUserDto,
-    @UploadedFile() file,
   ): Promise<void> {
-    return this.authService.update(id, body, file);
+    return this.authService.update(id, body);
   }
 }

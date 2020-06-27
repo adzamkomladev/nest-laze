@@ -28,6 +28,6 @@ export class ChatsService {
     createMessageDto: CreateMessageDto,
     user: User,
   ): Promise<Message> {
-    return this.messageRepository.createMessage(createMessageDto, user);
+    return this.messageRepository.createMessage(createMessageDto, user.id);
   }
 }

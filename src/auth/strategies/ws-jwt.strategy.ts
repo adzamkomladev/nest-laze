@@ -9,6 +9,7 @@ import { UserRepository } from '../repositories/user.repository';
 import { User } from '../entities/user.entity';
 
 import { JwtPayload } from '../interfaces/jwt-payload.interface';
+import { WsException } from '@nestjs/websockets';
 
 @Injectable()
 export class WsJwtStrategy extends PassportStrategy(Strategy, 'wsjwt') {
@@ -27,7 +28,7 @@ export class WsJwtStrategy extends PassportStrategy(Strategy, 'wsjwt') {
     try {
       return this.userRepository.findOneOrFail({ username });
     } catch (error) {
-      throw new UnauthorizedException();
+      throw new WsException('Unauthorized access');
     }
   }
 }

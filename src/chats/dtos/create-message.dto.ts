@@ -8,8 +8,4 @@ export class CreateMessageDto {
   @IsNotEmpty()
   @IsString()
   readonly text: string;
-
-  @IsNotEmpty()
-  @IsInt()
-  readonly senderId: number;
 }

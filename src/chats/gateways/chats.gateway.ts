@@ -43,9 +43,9 @@ export class ChatsGateway
 
     this.logger.log({ dome: 1234, payload, user });
 
-    //const message = await this.chatsService.createMessage(payload, user);
+    const message = await this.chatsService.createMessage(payload, user);
 
-    this.server.emit('messageToClient', payload);
+    this.server.emit('messageToClient', message);
   }
 
   afterInit(server: Server): void {

@@ -9,13 +9,13 @@ import { CreateMessageDto } from '../dtos/create-message.dto';
 export class MessageRepository extends Repository<Message> {
   createMessage(
     createMessageDto: CreateMessageDto,
-    user: User,
+    userId: number,
   ): Promise<Message> {
     const { chatId, text } = createMessageDto;
 
     const message = this.create();
 
-    message.senderId = user.id;
+    message.senderId = userId;
     message.chatId = chatId;
     message.text = text;
 

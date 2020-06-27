@@ -74,7 +74,6 @@
           sendMessage() {
             if (this.validateInput()) {
               const message = {
-                senderId: +this.name,
                 text: this.text,
                 chatId: 1,
               };
@@ -93,7 +92,7 @@
           const socketOptions = {
             query: {
               bearerToken:
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImthZmkiLCJpYXQiOjE1OTMyNzk0MzUsImV4cCI6MTU5MzI4MzAzNX0.kKMgirZcNrivvSLceS4uVEsXtZUbbI7U03R0R2Vfw-k', //'Bearer h93t4293t49jt34j9rferek...'
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImthZmkiLCJpYXQiOjE1OTMyODU0OTAsImV4cCI6MTU5MzI4OTA5MH0.QZEQ9AiW9PhkJPWWjxLcW_JlLtmObnIXsYQIaB1jcm8', //'Bearer h93t4293t49jt34j9rferek...'
             },
           };
 

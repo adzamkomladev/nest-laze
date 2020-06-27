@@ -76,7 +76,7 @@
               const message = {
                 senderId: +this.name,
                 text: this.text,
-                chatId: 1
+                chatId: 1,
               };
               this.socket.emit('messageToServer', message);
               this.text = '';
@@ -91,18 +91,15 @@
         },
         created() {
           const socketOptions = {
-            transportOptions: {
-              polling: {
-                extraHeaders: {
-                  Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZhbnUiLCJpYXQiOjE1OTEzNDc4ODgsImV4cCI6MTU5MTM1MTQ4OH0.6nbsHbFbyxYfRp8jrjXiBd1uA9Yii7zLG4cZ2b2Zgj4', //'Bearer h93t4293t49jt34j9rferek...'
-                }
-              }
-            }
+            query: {
+              bearerToken:
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImthZmkiLCJpYXQiOjE1OTMyNzk0MzUsImV4cCI6MTU5MzI4MzAzNX0.kKMgirZcNrivvSLceS4uVEsXtZUbbI7U03R0R2Vfw-k', //'Bearer h93t4293t49jt34j9rferek...'
+            },
           };
 
           this.socket = io('http://localhost:3000', socketOptions);
           this.socket.on('messageToClient', message => {
-
+            console.log({ message });
             this.receivedMessage(message);
           });
         },

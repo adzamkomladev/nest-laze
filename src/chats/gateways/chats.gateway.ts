@@ -7,24 +7,25 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Logger, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 
 import { Server, Socket } from 'socket.io';
+
+import { WsAuthGuard } from '../../auth/guards/ws-auth.guard';
 
 import { ChatsService } from '../services/chats.service';
 import { AuthService } from '../../auth/services/auth.service';
 
-import { CreateMessageDto } from '../dtos/create-message.dto';
-import { GetUser } from '../../auth/decorators/get-user.decorator';
 import { User } from '../../auth/entities/user.entity';
 
+import { CreateMessageDto } from '../dtos/create-message.dto';
+
 @WebSocketGateway()
-@UseGuards(AuthGuard())
+@UseGuards(WsAuthGuard)
 export class ChatsGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
-  private readonly logger: Logger;
-
   @WebSocketServer() server: Server;
+
+  private readonly logger: Logger;
 
   constructor(
     private readonly chatsService: ChatsService,
@@ -38,11 +39,13 @@ export class ChatsGateway
     client: Socket,
     payload: CreateMessageDto,
   ): Promise<void> {
-    this.logger.log({ payload });
+    const user: User = (client?.handshake as any)?.user;
+
+    this.logger.log({ dome: 1234, payload, user });
 
     //const message = await this.chatsService.createMessage(payload, user);
 
-    this.server.emit('messageToClient', {});
+    this.server.emit('messageToClient', payload);
   }
 
   afterInit(server: Server): void {

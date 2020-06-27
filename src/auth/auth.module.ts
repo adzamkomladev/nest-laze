@@ -4,12 +4,14 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 
 import { RoleGuard } from './guards/role.guard';
+import { WsAuthGuard } from './guards/ws-auth.guard';
 
 import { AuthService } from './services/auth.service';
 
 import { AuthController } from './auth.controller';
 
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { WsJwtStrategy } from './strategies/ws-jwt.strategy';
 
 import { UserRepository } from './repositories/user.repository';
 
@@ -24,8 +26,8 @@ import { UserRepository } from './repositories/user.repository';
     }),
     TypeOrmModule.forFeature([UserRepository]),
   ],
-  providers: [AuthService, JwtStrategy, RoleGuard],
+  providers: [AuthService, JwtStrategy, WsJwtStrategy, RoleGuard, WsAuthGuard],
   controllers: [AuthController],
-  exports: [JwtStrategy, PassportModule, AuthService, RoleGuard, TypeOrmModule],
+  exports: [PassportModule, AuthService, RoleGuard, TypeOrmModule, WsAuthGuard],
 })
 export class AuthModule {}

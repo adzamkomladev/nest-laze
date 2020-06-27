@@ -29,6 +29,19 @@ export class UsersService {
     }
   }
 
+  async findOneByUsername(username: string): Promise<User> {
+    try {
+      return await this.userRepository.findOneOrFail({
+        where: { username },
+        relations: ['projectsOwned', 'projectsAssigned'],
+      });
+    } catch (error) {
+      throw new NotFoundException(
+        `User with username: '${username}' not found!`,
+      );
+    }
+  }
+
   findAll(usersFilterDto: UsersFilterDto): Promise<User[]> {
     return this.userRepository.filterUsers(usersFilterDto);
   }

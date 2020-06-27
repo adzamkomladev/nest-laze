@@ -11,20 +11,19 @@ import { User } from '../entities/user.entity';
 import { JwtPayload } from '../interfaces/jwt-payload.interface';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
+export class WsJwtStrategy extends PassportStrategy(Strategy, 'wsjwt') {
   constructor(
     @InjectRepository(UserRepository)
     private readonly userRepository: UserRepository,
   ) {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromUrlQueryParameter('bearerToken'),
       secretOrKey: 'topSecret21',
     });
   }
 
   async validate(payload: JwtPayload): Promise<User> {
     const { username } = payload;
-
     try {
       return this.userRepository.findOneOrFail({ username });
     } catch (error) {

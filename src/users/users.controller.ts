@@ -17,7 +17,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { RoleGuard } from '../auth/guards/role.guard';
 import { CurrentUserOrAdminGuard } from './guards/current-user-or-admin.guard';
 
-import { AuthService } from '../auth/services/auth.service';
+import { UsersService } from './services/users.service';
 
 import { User } from '../auth/entities/user.entity';
 
@@ -27,18 +27,18 @@ import { UsersFilterDto } from './dtos/users-filter.dto';
 @Controller('users')
 @UseGuards(AuthGuard(), RoleGuard)
 export class UsersController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly usersService: UsersService) {}
 
   @Get()
   @UseInterceptors(ClassSerializerInterceptor)
   findAll(@Query(ValidationPipe) query: UsersFilterDto): Promise<User[]> {
-    return this.authService.findAll(query);
+    return this.usersService.findAll(query);
   }
 
   @Get(':id')
   @UseInterceptors(ClassSerializerInterceptor)
   findOne(@Param('id', ParseIntPipe) id: number): Promise<User> {
-    return this.authService.findOne(id);
+    return this.usersService.findOne(id);
   }
 
   @Patch(':id')
@@ -48,6 +48,6 @@ export class UsersController {
     @Param('id', ParseIntPipe) id: number,
     @Body(ValidationPipe) body: UpdateUserDto,
   ): Promise<void> {
-    return this.authService.update(id, body);
+    return this.usersService.update(id, body);
   }
 }

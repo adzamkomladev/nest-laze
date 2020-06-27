@@ -1,10 +1,11 @@
 import { Observable } from 'rxjs';
-import { AuthService } from '../services/auth.service';
 import { JwtService } from '@nestjs/jwt';
+
+import { UsersService } from '../../users/services/users.service';
 
 export class WebSocketAuth {
   constructor(
-    private readonly authService: AuthService,
+    private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -17,7 +18,7 @@ export class WebSocketAuth {
     try {
       const decoded = this.jwtService.verify(bearerToken) as any;
       return new Promise((resolve, reject) => {
-        return this.authService.findOne(decoded.id).then(user => {
+        return this.usersService.findOne(decoded.id).then(user => {
           if (user) {
             resolve(user);
           } else {

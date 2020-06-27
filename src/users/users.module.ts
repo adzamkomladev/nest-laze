@@ -4,11 +4,13 @@ import { AuthModule } from '../auth/auth.module';
 
 import { CurrentUserOrAdminGuard } from './guards/current-user-or-admin.guard';
 
+import { UsersService } from './services/users.service';
+
 import { UsersController } from './users.controller';
 
 @Module({
   imports: [AuthModule],
   controllers: [UsersController],
-  providers: [CurrentUserOrAdminGuard],
+  providers: [UsersService, CurrentUserOrAdminGuard],
 })
 export class UsersModule {}

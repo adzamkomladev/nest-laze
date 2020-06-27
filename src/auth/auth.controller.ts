@@ -1,22 +1,25 @@
 import {
-  Body, ClassSerializerInterceptor,
+  Body,
+  ClassSerializerInterceptor,
   Controller,
   Get,
   HttpCode,
   Post,
-  UseGuards, UseInterceptors,
+  UseGuards,
+  UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 import { AuthService } from './services/auth.service';
 
+import { User } from './entities/user.entity';
+
 import { AuthCredentialsDto } from './dtos/auth-credentials.dto';
 import { SignUpDto } from './dtos/sign-up.dto';
-import { AuthGuard } from '@nestjs/passport';
-import { RoleGuard } from './guards/role.guard';
+
 import { GetUser } from './decorators/get-user.decorator';
-import { User } from './entities/user.entity';
 
 @Controller('auth')
 export class AuthController {

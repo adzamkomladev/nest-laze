@@ -55,6 +55,12 @@
             <button id="send" class="btn" @click.prevent="sendMessage">
               Send
             </button>
+            <button @click.prevent="joinRoom">
+              Join room
+            </button>
+            <button @click.prevent="leaveRoom">
+              Leave room
+            </button>
           </div>
         </div>
       </div>
@@ -71,6 +77,12 @@
           socket: null,
         },
         methods: {
+          joinRoom() {
+            this.socket.emit('joinRoom', { chatId: 1 });
+          },
+          leaveRoom() {
+            this.socket.emit('leaveRoom', { chatId: 1 });
+          },
           sendMessage() {
             if (this.validateInput()) {
               const message = {
@@ -84,6 +96,12 @@
           receivedMessage(message) {
             this.messages.push(message);
           },
+          initializeMessages(messages) {
+            this.messages = [...messages];
+          },
+          clearMessages() {
+            this.messages = [];
+          },
           validateInput() {
             return this.name.length > 0 && this.text.length > 0;
           },
@@ -92,7 +110,7 @@
           const socketOptions = {
             query: {
               bearerToken:
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImthZmkiLCJpYXQiOjE1OTMyODU0OTAsImV4cCI6MTU5MzI4OTA5MH0.QZEQ9AiW9PhkJPWWjxLcW_JlLtmObnIXsYQIaB1jcm8', //'Bearer h93t4293t49jt34j9rferek...'
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImthZmkiLCJpYXQiOjE1OTMzNDA5MzQsImV4cCI6MTU5MzM0NDUzNH0.WgBbM5mvLrcJ2buMVXKyaQUEgGel0JFYp7lgQnZzaGE', //'Bearer h93t4293t49jt34j9rferek...'
             },
           };
 
@@ -100,6 +118,16 @@
           this.socket.on('messageToClient', message => {
             console.log({ message });
             this.receivedMessage(message);
+          });
+
+          this.socket.on('joinRoom', chat => {
+            console.log({ chat });
+            this.initializeMessages(chat?.messages);
+          });
+
+          this.socket.on('leaveRoom', response => {
+            console.log({ response });
+            this.clearMessages();
           });
         },
       });

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { ChatRepository } from '../repositories/chat.repository';
@@ -10,6 +10,7 @@ import { Message } from '../entities/message.entity';
 
 import { CreateChatDto } from '../dtos/create-chat.dto';
 import { CreateMessageDto } from '../dtos/create-message.dto';
+import { RoomDto } from '../dtos/room.dto';
 
 @Injectable()
 export class ChatsService {
@@ -29,5 +30,17 @@ export class ChatsService {
     user: User,
   ): Promise<Message> {
     return this.messageRepository.createMessage(createMessageDto, user.id);
+  }
+
+  findOneChatById(roomDto: RoomDto): Promise<Chat> {
+    const { chatId } = roomDto;
+
+    try {
+      return this.chatRepository.findOneOrFail(chatId, {
+        relations: ['userOne', 'userTwo', 'messages'],
+      });
+    } catch (error) {
+      throw new NotFoundException(`Chat with id: '${chatId}' not found!`);
+    }
   }
 }

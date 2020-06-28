@@ -33,6 +33,9 @@ export class Message extends BaseEntity {
   @Column('text')
   text: string;
 
+  @Column({ default: false })
+  seen: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 

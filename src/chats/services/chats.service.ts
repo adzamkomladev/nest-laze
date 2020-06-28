@@ -11,6 +11,7 @@ import { Message } from '../entities/message.entity';
 import { CreateChatDto } from '../dtos/create-chat.dto';
 import { CreateMessageDto } from '../dtos/create-message.dto';
 import { RoomDto } from '../dtos/room.dto';
+import { MessageSeenDto } from '../dtos/message-seen.dto';
 
 @Injectable()
 export class ChatsService {
@@ -41,6 +42,20 @@ export class ChatsService {
       });
     } catch (error) {
       throw new NotFoundException(`Chat with id: '${chatId}' not found!`);
+    }
+  }
+
+  async markMessageAsSeen(messageSeenDto: MessageSeenDto): Promise<Message> {
+    const { messageId } = messageSeenDto;
+
+    try {
+      const message = await this.messageRepository.findOneOrFail(messageId);
+
+      message.seen = true;
+
+      return await message.save();
+    } catch (error) {
+      throw new NotFoundException(`Message with id: '${messageId}' not found!`);
     }
   }
 }

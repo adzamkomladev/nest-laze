@@ -19,7 +19,7 @@ import { User } from '../../auth/entities/user.entity';
 
 import { CreateMessageDto } from '../dtos/create-message.dto';
 import { RoomDto } from '../dtos/room.dto';
-import { Chat } from '../entities/chat.entity';
+import { MessageSeenDto } from '../dtos/message-seen.dto';
 
 @WebSocketGateway()
 @UseGuards(WsAuthGuard)
@@ -47,12 +47,14 @@ export class ChatsGateway
 
   @SubscribeMessage('joinRoom')
   async handleJoinRoom(client: Socket, payload: RoomDto): Promise<void> {
+    const user: User = (client?.handshake as any)?.user;
+
     try {
       const chat = await this.chatsService.findOneChatById(payload);
 
       client.join(String(payload.chatId));
 
-      this.server.emit('joinRoom', chat);
+      this.server.emit(`joinRoom${user.id}`, chat);
     } catch (error) {
       throw new WsException(error?.message);
     }
@@ -60,9 +62,25 @@ export class ChatsGateway
 
   @SubscribeMessage('leaveRoom')
   handleLeaveRoom(client: Socket, payload: RoomDto): void {
+    const user: User = (client?.handshake as any)?.user;
+
     client.leave(String(payload.chatId));
 
-    this.server.emit('leaveRoom', payload);
+    this.server.emit(`leaveRoom${user.id}`, payload);
+  }
+
+  @SubscribeMessage('messageSeen')
+  async handleMessageSeen(
+    client: Socket,
+    payload: MessageSeenDto,
+  ): Promise<void> {
+    try {
+      const message = await this.chatsService.markMessageAsSeen(payload);
+
+      this.server.emit('messageSeen', message);
+    } catch (error) {
+      throw new WsException(error?.message);
+    }
   }
 
   afterInit(server: Server): void {

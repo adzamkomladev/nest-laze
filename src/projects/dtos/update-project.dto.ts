@@ -35,7 +35,7 @@ export class UpdateProjectDto {
   readonly deadline?: Date;
 
   @IsOptional()
-  @IsNumberString()
+  @IsInt()
   readonly assigneeId?: number;
 
   @IsOptional()

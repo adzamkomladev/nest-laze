@@ -1,4 +1,9 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { ProjectRepository } from './project.repository';
@@ -55,19 +60,29 @@ export class ProjectsService {
       fileUrl,
     } = updateProjectDto;
 
-    project.title = title ?? project.title;
-    project.details = details ?? project.details;
-    project.fileUrl = fileUrl ?? project?.fileUrl;
-    project.status = status ?? project.status;
-    project.price = price ?? project?.price;
-    project.deadline = deadline ?? project.deadline;
+    const updateData: Partial<Project> = {
+      title: title ?? project.title,
+      details: details ?? project.details,
+      fileUrl: fileUrl ?? project?.fileUrl,
+      status: status ?? project.status,
+      price: price ?? project?.price,
+      deadline: deadline ?? project.deadline,
+    };
 
     if (assigneeId) {
-      project.assigneeId = assigneeId;
-      project.dateAssigned = new Date();
+      updateData.assigneeId = assigneeId;
+      updateData.dateAssigned = new Date();
     }
 
-    this.logger.log(await project.save());
+    try {
+      const results = await this.projectsRepository.update(1, updateData);
+
+      if (results.affected === 0) {
+        this.logger.error('Failed to update project!');
+      }
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to update project!');
+    }
   }
 
   async delete(id: number): Promise<void> {

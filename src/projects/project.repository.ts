@@ -7,6 +7,7 @@ import { CreateProjectDto } from './dtos/create-project.dto';
 import { ProjectsFilterDto } from './dtos/projects-filter.dto';
 
 import { Status } from './enums/status.enum';
+import { UpdateProjectDto } from './dtos/update-project.dto';
 
 @EntityRepository(Project)
 export class ProjectRepository extends Repository<Project> {
@@ -44,4 +45,8 @@ export class ProjectRepository extends Repository<Project> {
 
     return project.save();
   }
+
+  // updateProject(id: number, updateProjectDto: UpdateProjectDto): Promise<void> {
+  //   const query = this.updat();
+  // }
 }

@@ -1,7 +1,7 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { Chat } from '../entities/chat.entity';
 import { CreateChatDto } from '../dtos/create-chat.dto';
-import { User } from '../../auth/entities/user.entity';
+import { User } from '../../auth/user.entity';
 import { Status } from '../../projects/enums/status.enum';
 
 @EntityRepository(Chat)

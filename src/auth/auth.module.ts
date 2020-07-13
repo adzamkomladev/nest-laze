@@ -6,14 +6,14 @@ import { JwtModule } from '@nestjs/jwt';
 import { RoleGuard } from './guards/role.guard';
 import { WsAuthGuard } from './guards/ws-auth.guard';
 
-import { AuthService } from './services/auth.service';
+import { AuthService } from './auth.service';
 
 import { AuthController } from './auth.controller';
 
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { WsJwtStrategy } from './strategies/ws-jwt.strategy';
 
-import { UserRepository } from './repositories/user.repository';
+import { UserRepository } from './user.repository';
 
 @Module({
   imports: [

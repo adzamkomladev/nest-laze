@@ -17,13 +17,13 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-import { ProjectAssigneeGuard } from './guards/project-assignee.guard';
+import { ProjectAssigneeGuard } from './project-assignee.guard';
 import { RoleGuard } from '../auth/guards/role.guard';
 
-import { ProjectsService } from './services/projects.service';
+import { ProjectsService } from './projects.service';
 
-import { Project } from './entities/project.entity';
-import { User } from '../auth/entities/user.entity';
+import { Project } from './project.entity';
+import { User } from '../auth/user.entity';
 
 import { CreateProjectDto } from './dtos/create-project.dto';
 import { UpdateProjectDto } from './dtos/update-project.dto';

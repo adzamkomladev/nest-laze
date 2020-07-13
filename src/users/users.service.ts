@@ -1,12 +1,12 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { UserRepository } from '../../auth/repositories/user.repository';
+import { UserRepository } from '../auth/user.repository';
 
-import { User } from '../../auth/entities/user.entity';
+import { User } from '../auth/user.entity';
 
-import { UsersFilterDto } from '../dtos/users-filter.dto';
-import { UpdateUserDto } from '../dtos/update-user.dto';
+import { UsersFilterDto } from './dtos/users-filter.dto';
+import { UpdateUserDto } from './dtos/update-user.dto';
 
 @Injectable()
 export class UsersService {

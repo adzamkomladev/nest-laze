@@ -13,10 +13,10 @@ import {
 import { Exclude } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
 
-import { Project } from '../../projects/entities/project.entity';
-import { Chat } from '../../chats/entities/chat.entity';
+import { Project } from '../projects/project.entity';
+import { Chat } from '../chats/entities/chat.entity';
 
-import { Role } from '../enums/role.enum';
+import { Role } from './enums/role.enum';
 
 @Entity()
 @Unique(['username'])

@@ -12,9 +12,9 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-import { AuthService } from './services/auth.service';
+import { AuthService } from './auth.service';
 
-import { User } from './entities/user.entity';
+import { User } from './user.entity';
 
 import { AuthCredentialsDto } from './dtos/auth-credentials.dto';
 import { SignUpDto } from './dtos/sign-up.dto';

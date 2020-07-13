@@ -1,12 +1,12 @@
 import { EntityRepository, Repository } from 'typeorm';
 
-import { Project } from '../entities/project.entity';
-import { User } from '../../auth/entities/user.entity';
+import { Project } from './project.entity';
+import { User } from '../auth/user.entity';
 
-import { CreateProjectDto } from '../dtos/create-project.dto';
-import { ProjectsFilterDto } from '../dtos/projects-filter.dto';
+import { CreateProjectDto } from './dtos/create-project.dto';
+import { ProjectsFilterDto } from './dtos/projects-filter.dto';
 
-import { Status } from '../enums/status.enum';
+import { Status } from './enums/status.enum';
 
 @EntityRepository(Project)
 export class ProjectRepository extends Repository<Project> {

@@ -15,11 +15,11 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 
 import { RoleGuard } from '../auth/guards/role.guard';
-import { CurrentUserOrAdminGuard } from './guards/current-user-or-admin.guard';
+import { CurrentUserOrAdminGuard } from './current-user-or-admin.guard';
 
-import { UsersService } from './services/users.service';
+import { UsersService } from './users.service';
 
-import { User } from '../auth/entities/user.entity';
+import { User } from '../auth/user.entity';
 
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UsersFilterDto } from './dtos/users-filter.dto';

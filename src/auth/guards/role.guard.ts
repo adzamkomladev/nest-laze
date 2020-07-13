@@ -3,7 +3,7 @@ import { Reflector } from '@nestjs/core';
 
 import { Observable } from 'rxjs';
 
-import { User } from '../entities/user.entity';
+import { User } from '../user.entity';
 
 import { Role } from '../enums/role.enum';
 

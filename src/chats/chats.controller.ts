@@ -8,10 +8,10 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-import { ChatsService } from './services/chats.service';
+import { ChatsService } from './chats.service';
 
 import { Chat } from './entities/chat.entity';
-import { User } from '../auth/entities/user.entity';
+import { User } from '../auth/user.entity';
 
 import { CreateChatDto } from './dtos/create-chat.dto';
 

@@ -11,15 +11,15 @@ import { Logger, UseGuards } from '@nestjs/common';
 
 import { Server, Socket } from 'socket.io';
 
-import { WsAuthGuard } from '../../auth/guards/ws-auth.guard';
+import { WsAuthGuard } from '../auth/guards/ws-auth.guard';
 
-import { ChatsService } from '../services/chats.service';
+import { ChatsService } from './chats.service';
 
-import { User } from '../../auth/entities/user.entity';
+import { User } from '../auth/user.entity';
 
-import { CreateMessageDto } from '../dtos/create-message.dto';
-import { RoomDto } from '../dtos/room.dto';
-import { MessageSeenDto } from '../dtos/message-seen.dto';
+import { CreateMessageDto } from './dtos/create-message.dto';
+import { RoomDto } from './dtos/room.dto';
+import { MessageSeenDto } from './dtos/message-seen.dto';
 
 @WebSocketGateway()
 @UseGuards(WsAuthGuard)

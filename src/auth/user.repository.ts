@@ -6,11 +6,11 @@ import {
 
 import * as bcrypt from 'bcrypt';
 
-import { User } from '../entities/user.entity';
+import { User } from './user.entity';
 
-import { AuthCredentialsDto } from '../dtos/auth-credentials.dto';
-import { UsersFilterDto } from '../../users/dtos/users-filter.dto';
-import { SignUpDto } from '../dtos/sign-up.dto';
+import { AuthCredentialsDto } from './dtos/auth-credentials.dto';
+import { UsersFilterDto } from '../users/dtos/users-filter.dto';
+import { SignUpDto } from './dtos/sign-up.dto';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {

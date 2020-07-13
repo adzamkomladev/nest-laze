@@ -1,7 +1,7 @@
 import { EntityRepository, Repository } from 'typeorm';
 
 import { Message } from '../entities/message.entity';
-import { User } from '../../auth/entities/user.entity';
+import { User } from '../../auth/user.entity';
 
 import { CreateMessageDto } from '../dtos/create-message.dto';
 

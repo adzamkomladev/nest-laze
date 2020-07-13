@@ -2,9 +2,9 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 
 import { Observable } from 'rxjs';
 
-import { User } from '../../auth/entities/user.entity';
+import { User } from '../auth/user.entity';
 
-import { Role } from '../../auth/enums/role.enum';
+import { Role } from '../auth/enums/role.enum';
 
 @Injectable()
 export class CurrentUserOrAdminGuard implements CanActivate {

@@ -1,17 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { ChatRepository } from '../repositories/chat.repository';
-import { MessageRepository } from '../repositories/message.repository';
+import { ChatRepository } from './repositories/chat.repository';
+import { MessageRepository } from './repositories/message.repository';
 
-import { User } from '../../auth/entities/user.entity';
-import { Chat } from '../entities/chat.entity';
-import { Message } from '../entities/message.entity';
+import { User } from '../auth/user.entity';
+import { Chat } from './entities/chat.entity';
+import { Message } from './entities/message.entity';
 
-import { CreateChatDto } from '../dtos/create-chat.dto';
-import { CreateMessageDto } from '../dtos/create-message.dto';
-import { RoomDto } from '../dtos/room.dto';
-import { MessageSeenDto } from '../dtos/message-seen.dto';
+import { CreateChatDto } from './dtos/create-chat.dto';
+import { CreateMessageDto } from './dtos/create-message.dto';
+import { RoomDto } from './dtos/room.dto';
+import { MessageSeenDto } from './dtos/message-seen.dto';
 
 @Injectable()
 export class ChatsService {

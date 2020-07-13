@@ -1,17 +1,17 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { ProjectRepository } from '../repositories/project.repository';
+import { ProjectRepository } from './project.repository';
 
-import { Project } from '../entities/project.entity';
-import { User } from '../../auth/entities/user.entity';
+import { Project } from './project.entity';
+import { User } from '../auth/user.entity';
 
-import { CreateProjectDto } from '../dtos/create-project.dto';
-import { UpdateProjectDto } from '../dtos/update-project.dto';
-import { ProjectsFilterDto } from '../dtos/projects-filter.dto';
-import { SubmitProjectDto } from '../dtos/submit-project.dto';
+import { CreateProjectDto } from './dtos/create-project.dto';
+import { UpdateProjectDto } from './dtos/update-project.dto';
+import { ProjectsFilterDto } from './dtos/projects-filter.dto';
+import { SubmitProjectDto } from './dtos/submit-project.dto';
 
-import { Status } from '../enums/status.enum';
+import { Status } from './enums/status.enum';
 
 @Injectable()
 export class ProjectsService {

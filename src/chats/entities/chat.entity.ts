@@ -11,7 +11,7 @@ import {
 } from 'typeorm';
 
 import { Message } from './message.entity';
-import { User } from '../../auth/entities/user.entity';
+import { User } from '../../auth/user.entity';
 
 @Entity()
 export class Chat extends BaseEntity {

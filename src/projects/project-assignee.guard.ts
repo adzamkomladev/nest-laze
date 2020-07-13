@@ -1,8 +1,8 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 
-import { ProjectsService } from '../services/projects.service';
+import { ProjectsService } from './projects.service';
 
-import { User } from '../../auth/entities/user.entity';
+import { User } from '../auth/user.entity';
 
 @Injectable()
 export class ProjectAssigneeGuard implements CanActivate {

@@ -75,7 +75,7 @@ export class ProjectsService {
     }
 
     try {
-      const results = await this.projectsRepository.update(1, updateData);
+      const results = await this.projectsRepository.update(id, updateData);
 
       if (results.affected === 0) {
         this.logger.error('Failed to update project!');
